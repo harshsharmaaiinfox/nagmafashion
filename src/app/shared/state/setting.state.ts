@@ -94,13 +94,13 @@ export class SettingState {
               },
               {
                 name: 'star_mangal',
-                status: true,
+                status: false,
                 title: 'Pay via UPI App',
                 // icon: './assets/images/payment/star_mangal.png',
               },
               {
                 name: 'pay_drill',
-                status: true,
+                status: false,
                 title: 'Cash Free',
                 icon: './assets/images/cash_free.jpg',
               },
