@@ -61,8 +61,8 @@ export class DenverComponent implements OnInit, AfterViewInit, OnDestroy {
   public productSlider6ItemMargin = data.productSlider6ItemMargin;
   public productSlider4Item   = data.productSlider;
 
-  public featuredProductIds:  number[] = [7515, 7511, 7572, 7555];
-  public featuredProductIds2: number[] = [7564, 7580, 7561, 7824];
+  public featuredProductIds:  number[] = [10219, 10210, 10249, 10222];
+  public featuredProductIds2: number[] = [10658, 10660, 10365, 10665];
 
   // Video carousel
   public currentVideoIndex = 0;
