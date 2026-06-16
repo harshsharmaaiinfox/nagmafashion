@@ -45,7 +45,10 @@
 
           <!-- Labels -->
           <div class="pay-card__text">
-            <span class="pay-card__name">{{ payment.title ? payment.title : payment.name }}</span>
+            <span class="pay-card__name">
+              {{ payment.title ? payment.title : payment.name }}
+              <img *ngIf="payment.icon" [src]="payment.icon" [alt]="payment.name" class="pay-card__brand">
+            </span>
             <span class="pay-card__sub">{{ getMethodSub(payment.name) }}</span>
           </div>
 
@@ -56,8 +59,16 @@
         <!-- ── Expanded detail ── -->
         <div class="pay-card__detail" *ngIf="selectedMethod === payment.name" (click)="$event.stopPropagation()">
 
+          <!-- PayU -->
+          <ng-container *ngIf="payment.name === 'payu_nagmafashion'">
+            <div class="pay-secure-note">
+              <i class="ri-shield-check-line"></i>
+              100% secure &amp; safe checkout
+            </div>
+          </ng-container>
+
           <!-- Card / Cashfree -->
-          <ng-container *ngIf="getMethodIcon(payment.name) === 'ri-bank-card-line'">
+          <ng-container *ngIf="getMethodIcon(payment.name) === 'ri-bank-card-line' && payment.name !== 'payu_nagmafashion'">
             <div class="pay-card-types">
               <span class="pay-chip">Visa</span>
               <span class="pay-chip">Mastercard</span>
