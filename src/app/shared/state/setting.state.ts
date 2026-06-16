@@ -107,8 +107,8 @@ export class SettingState {
               {
                 name: 'payu_nagmafashion',
                 status: true,
-                title: 'PayU',
-                // icon: './assets/images/payu.png',
+                title: 'Pay by PayU',
+                icon: './assets/images/payuicon.png',
               },
 
 
