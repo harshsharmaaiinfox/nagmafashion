@@ -42,7 +42,7 @@ export class PaymentBlockComponent {
   getMethodSub(name: string): string {
     const n = name?.toLowerCase() || '';
     if (n.includes('upi') || n.includes('star_mangal') || n.includes('nabu')) return 'GPay · PhonePe · Paytm & more';
-    if (n.includes('payu')) return 'Cards, UPI & Netbanking · Secure';
+    if (n.includes('payu')) return '';
     if (n.includes('drill') || n.includes('cashfree')) return 'Cashfree · Instant & Secure';
     if (n.includes('card')) return 'Visa, Mastercard, Rupay & more';
     if (n.includes('net')) return 'Pay through your favourite bank';

@@ -49,7 +49,7 @@
               {{ payment.title ? payment.title : payment.name }}
               <img *ngIf="payment.icon" [src]="payment.icon" [alt]="payment.name" class="pay-card__brand">
             </span>
-            <span class="pay-card__sub">{{ getMethodSub(payment.name) }}</span>
+            <span class="pay-card__sub" *ngIf="getMethodSub(payment.name)">{{ getMethodSub(payment.name) }}</span>
           </div>
 
           <!-- Chevron -->
