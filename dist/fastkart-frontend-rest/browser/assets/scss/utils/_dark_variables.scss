@@ -1,28 +1,21 @@
 :root {
-  --theme-color: #FF6B35; /* MANGAL - Vibrant Orange */
-  --theme-color-secondary: #0066CC; /* MURTI - Distinct Blue */
-  --theme-color-light: #87CEEB; /* Light Blue for accents */
+  --theme-color: #C9A96E;           /* Gold — luxury primary */
+  --theme-color-secondary: #E8DDD0; /* Warm cream secondary */
+  --theme-color-light: #2A2520;     /* Warm dark accent */
 }
 
-$white: #2a2d2d;
-$black: #ffffff;
-$title-color: #ffffff;
-$content-color: #dddddd;
-$light-gray: #1d1d22;
-$danger-color: #ff4f4f;
-$rating-color: #ffb321;
-$border-color: rgba(119, 119, 119, 0.44);
+$white: #141210;
+$black: #F0EBE3;
+$title-color: #F0EBE3;
+$content-color: #B8B0A8;
+$light-gray: #1C1A18;
+$danger-color: #C0392B;
+$rating-color: #C9A96E;
+$border-color: rgba(201, 169, 110, 0.2);
 
 
 // font family
-$public-sans: "Outfit", sans-serif;
-$exo-sarif: 'Exo 2', sans-serif;
-$russo-sarif: 'Russo One', sans-serif;
-$pacifico: 'Pacifico', cursive;
-$kaushan: 'Kaushan Script', cursive;
-$indie: 'Indie Flower', cursive;
-$great: 'Great Vibes', cursive;
-$qwitcher: 'Qwitcher Grypen', cursive;
+$public-sans: "Inter", sans-serif;
 $fontawesome: 'Font Awesome 6 Free';
 
 // Breakpoints

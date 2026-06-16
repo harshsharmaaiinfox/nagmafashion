@@ -6,6 +6,7 @@
 @import "ngx-owl-carousel-o/lib/styles/scss/owl.theme.default";
 
 @import 'swiper/swiper.scss';
+@import 'vendors/lazy-loading';
 
 @import "utils/variables";
 @import "style";
@@ -17,7 +18,12 @@
 .container-lg,
 .container-xl,
 .container-xxl,
-.container-fluid,
+.container-fluid {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+// fluid-lg/md/xs keep their own padding — do not strip it here
 .container-fluid-lg,
 .container-fluid-md,
 .container-fluid-xs {
@@ -38,15 +44,15 @@ section {
   max-width: 100% !important;
 }
 
-// Global Outfit Font Family
+// Global Inter body font — headings use Playfair Display via typography
 * {
-  font-family: "Outfit", sans-serif;
+  font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }
 
 html, body {
-  font-family: "Outfit", sans-serif;
+  font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }

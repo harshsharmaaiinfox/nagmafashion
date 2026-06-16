@@ -305,6 +305,7 @@
     width: 3px;
     height: 26px;
     background-color: var(--theme-color);
+
     body.rtl & {
       left: unset;
       right: -20px;

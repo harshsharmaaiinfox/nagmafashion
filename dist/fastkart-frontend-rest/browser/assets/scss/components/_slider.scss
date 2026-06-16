@@ -1,6 +1,17 @@
 /**=====================
      Slider scss
 ==========================**/
+
+// NAGMA: Make owl-carousel fill aspect-ratio containers on PDP
+.pdp__main-wrap {
+  .owl-carousel,
+  .owl-stage-outer,
+  .owl-stage,
+  .owl-item,
+  .owl-item.active {
+    height: 100% !important;
+  }
+}
 .owl-carousel {
   &.owl-drag {
     .owl-item {
