@@ -163,7 +163,9 @@ $lux-ease:       cubic-bezier(0.25, 0.46, 0.45, 0.94);
   text-decoration: none;
 
   ::ng-deep {
-    button, a,
+    // NOTE: exclude the account dropdown buttons (.acc-btn) — they manage
+    // their own background/padding and were being flattened to invisible.
+    button:not(.acc-btn), a:not(.acc-btn),
     .header-wishlist, .btn,
     .custom-account-dropdown, .account-trigger {
       background: transparent !important;
@@ -183,6 +185,12 @@ $lux-ease:       cubic-bezier(0.25, 0.46, 0.45, 0.94);
       line-height: 1 !important;
 
       @media (max-width: 575px) { font-size: 18px !important; }
+    }
+
+    // account dropdown buttons keep their own icon size/colour
+    .acc-btn i {
+      font-size: 15px !important;
+      color: inherit !important;
     }
 
     .badge, span.position-absolute {

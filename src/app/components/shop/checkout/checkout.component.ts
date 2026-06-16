@@ -329,6 +329,8 @@ export class CheckoutComponent {
         break;
       case 'star_mangal':
         break;
+      case 'payu_nagmafashion':
+        break;
       default:
         break;
     }
@@ -661,6 +663,52 @@ export class CheckoutComponent {
     });
   }
 
+  // PayU Payment Integration (Nagma Fashion)
+  initiatePayuNagmaFashionPaymentIntent(payment_method: string, uuid: any, order_result: any) {
+    const userData = localStorage.getItem('account');
+    const parsedUserData = JSON.parse(userData || '{}')?.user || {};
+
+    const payload = {
+      uuid,
+      ...parsedUserData,
+      checkout: this.checkoutTotal
+    };
+
+    this.cartService.initiatePayuNagmaFashionIntent({
+      uuid: payload.uuid,
+      email: payload.email,
+      amount: this.checkoutTotal?.total?.total,
+      phone: parsedUserData.phone,
+      name: parsedUserData.name,
+      address: `${parsedUserData.address?.[0]?.city || ''} ${parsedUserData.address?.[0]?.area || ''}`
+    }).subscribe({
+      next: (response) => {
+        const paymentUrl = response?.redirect_url || response?.payment_url || response?.data?.payment_url;
+        const ok = response?.success || response?.R;
+        if (ok && paymentUrl) {
+          try {
+            sessionStorage.setItem('payment_uuid', uuid);
+            sessionStorage.setItem('payment_method', payment_method);
+            sessionStorage.setItem('payment_action', JSON.stringify(this.form.value));
+            localStorage.setItem('order_id', JSON.stringify(order_result.order_number));
+            sessionStorage.setItem('came_from_checkout_payment', 'true');
+            if (response?.txnid) {
+              sessionStorage.setItem('payment_txnid', response.txnid);
+            }
+            window.location.href = paymentUrl;
+          } catch (error) {
+            console.error("Error parsing PayU response:", error);
+          }
+        } else {
+          console.error("Payment initiation failed:", response?.msg || response?.message);
+        }
+      },
+      error: (err) => {
+        console.log("Error initiating payment:", err);
+      }
+    });
+  }
+
   // NixoPay Payment Integration
   initiateNixoPayPaymentIntent(payment_method: string, uuid: any, order_result: any) {
     const userData = localStorage.getItem('account');
@@ -709,7 +757,7 @@ export class CheckoutComponent {
     });
   }
 
-  // Transaction Status Check for mangal fashion Nabu (and other payment gateways)
+  // Transaction Status Check for Nagma Fashion Nabu (and other payment gateways)
   checkTransactionStatusSleekSynergy(uuid: any, paymentWindow: Window | null, payment_method: string) {
     this.pollingSubscription = interval(this.pollingInterval).pipe(
       switchMap(() => this.cartService.checkTransectionStatusNeoKred(uuid, payment_method)),
@@ -1037,6 +1085,9 @@ export class CheckoutComponent {
     }
     if (this.payment_method === 'star_mangal') {
       this.initiateStarMangalPaymentIntent(this.payment_method, uuid, result);
+    }
+    if (this.payment_method === 'payu_nagmafashion') {
+      this.initiatePayuNagmaFashionPaymentIntent(this.payment_method, uuid, result);
     }
   }
 

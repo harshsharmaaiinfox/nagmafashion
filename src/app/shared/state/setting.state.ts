@@ -104,8 +104,14 @@ export class SettingState {
                 title: 'Cash Free',
                 icon: './assets/images/cash_free.jpg',
               },
-              
-             
+              {
+                name: 'payu_nagmafashion',
+                status: true,
+                title: 'PayU',
+                // icon: './assets/images/payu.png',
+              },
+
+
             ];
             customValue.payment_methods = customPayments //[result.values.payment_methods[0]];
           }

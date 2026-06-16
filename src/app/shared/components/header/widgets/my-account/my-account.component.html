@@ -20,6 +20,7 @@
 
   <!-- ── Dropdown Panel ── -->
   <div class="acc-panel" [class.acc-panel--open]="isOpen" (click)="$event.stopPropagation()">
+    <div class="acc-panel__accent"></div>
     <div class="acc-panel__notch"></div>
 
     <!-- ══ GUEST STATE ══ -->
@@ -28,6 +29,7 @@
       <div class="acc-panel__head acc-panel__head--guest">
         <div class="acc-panel__head-avatar">
           <i class="ri-user-3-line"></i>
+          <span class="acc-panel__head-ring"></span>
         </div>
         <div class="acc-panel__head-copy">
           <p class="acc-panel__greeting">Welcome to Nagma</p>
@@ -39,10 +41,11 @@
         <a [routerLink]="['/auth/login']" class="acc-btn acc-btn--primary" (click)="close()">
           <i class="ri-login-box-line"></i>
           <span>Login</span>
+          <i class="ri-arrow-right-line acc-btn__go"></i>
         </a>
         <a [routerLink]="['/auth/register']" class="acc-btn acc-btn--ghost" (click)="close()">
           <i class="ri-user-add-line"></i>
-          <span>Register</span>
+          <span>Create an account</span>
         </a>
       </div>
 
