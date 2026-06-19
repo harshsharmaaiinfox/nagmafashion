@@ -237,7 +237,7 @@ export class SeoService {
         "itemCondition": "https://schema.org/NewCondition",
         "seller": {
           "@type": "Organization",
-          "name": "Nagma Fashion"
+          "name": "NAGMA RETAIL SOLUTIONS PRIVATE LIMITED"
         }
       }
     };
@@ -274,9 +274,11 @@ export class SeoService {
         "addressCountry": "IN"
       },
       "sameAs": [
-        "https://facebook.com/ecomus",
-        "https://twitter.com/ecomus",
-        "https://instagram.com/ecomus"
+        "https://www.instagram.com/SPARKSHOPWEARofficial/",
+        "https://www.facebook.com/profile.php?id=61587125992259",
+        "https://www.youtube.com/@SPARKSHOPWEARofficial",
+        "https://www.pinterest.com/SPARKSHOPWEARofficial/",
+        "https://x.com/SPARKSHOPWEAR"
       ],
       "contactPoint": {
         "@type": "ContactPoint",

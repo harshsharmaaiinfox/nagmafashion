@@ -109,22 +109,7 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════
-    7. TOP SELLER — Store sellers row
-  ══════════════════════════════════════════════ -->
-  <section class="nf-sec nf-sec--sellers" *ngIf="data?.content?.main_content?.seller?.status">
-    <div class="container-fluid-lg">
-      <div class="nf-section-head">
-        <div class="nf-section-head__text">
-          <h2 class="nf-section-title">{{ data?.content?.main_content?.seller?.title }}</h2>
-          <p class="nf-section-desc" *ngIf="data?.content?.main_content?.seller?.description">
-            {{ data?.content?.main_content?.seller?.description }}
-          </p>
-        </div>
-      </div>
-      <app-top-seller [sellerIds]="data?.content?.main_content?.seller?.store_ids || []"></app-top-seller>
-    </div>
-  </section>
+  <!-- Top Seller section removed: single-brand store, no third-party seller/marketplace content (compliance) -->
 
   <!-- ══════════════════════════════════════════════
     8. EDITORIAL BANNER 2 — Nykaa: "HIDDEN GEMS" (right large + left image)
