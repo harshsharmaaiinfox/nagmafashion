@@ -282,6 +282,7 @@ export class SeoService {
       ],
       "contactPoint": {
         "@type": "ContactPoint",
+        "telephone": "+91-7428187182",
         "email": "info@sparkshopwear.com",
         "contactType": "customer service"
       }
