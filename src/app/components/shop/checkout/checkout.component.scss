@@ -764,6 +764,17 @@ $white:  #ffffff;
   }
 }
 
+.otp-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
 .otp-field {
   width: 100%;
 
@@ -787,18 +798,13 @@ $white:  #ffffff;
       background: #ffffff;
     }
 
-    &--error { border-color: #e74c3c !important; }
-  }
-}
-
-::ng-deep {
-  .otp-verify-modal {
-    z-index: 3100 !important;
-    .modal-content {
-      border: none !important;
-      border-radius: 20px !important;
-      overflow: hidden !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    &::placeholder {
+      letter-spacing: normal;
+      font-size: 14px;
+      color: #999;
+      font-weight: 400;
     }
+
+    &--error { border-color: #e74c3c !important; }
   }
 }

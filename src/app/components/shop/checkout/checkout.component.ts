@@ -63,6 +63,7 @@ export class CheckoutComponent {
   public loginForm: FormGroup;
   public otpForm: FormGroup;
   public showLogin: boolean = false;
+  public showOtpOverlay: boolean = false;
   public checkoutRegistrationEmail: string = '';
   private checkoutOtpModalRef: any;
   private pendingGuestItems: any[] = [];
@@ -134,8 +135,8 @@ export class CheckoutComponent {
       name: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       country_code: new FormControl('91', [Validators.required]),
-      phone: new FormControl('', [Validators.required]),
-      password: new FormControl(),
+      phone: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]*$/)]),
+      password: new FormControl('', [Validators.required]),
       shipping_address: new FormGroup({
         title: new FormControl(''),
         floor_no: new FormControl(''),
@@ -165,6 +166,19 @@ export class CheckoutComponent {
         country_id: new FormControl(''),
         state_id: new FormControl(''),
       })
+    });
+
+    this.form.controls['phone']?.valueChanges.subscribe((value) => {
+      if(value && value.toString().length < 10) {
+        this.form.controls['phone'].markAsTouched();
+        this.form.controls['phone'].setErrors({invalid: true});
+      }
+      if(value && value.toString().length > 10) {
+        this.form.controls['phone']?.setValue(+value.toString().slice(0, 10), { emitEvent: false });
+      }
+      if(value && value.toString().length === 10) {
+        this.form.controls['phone'].setErrors(null);
+      }
     });
 
     this.store.selectSnapshot(state => state.setting).setting.activation.guest_checkout = true;
@@ -1159,12 +1173,7 @@ export class CheckoutComponent {
           this.loading = false;
           this.checkoutRegistrationEmail = registerPayload.email;
           this.otpForm.reset();
-          this.checkoutOtpModalRef = this.modalService.open(this.checkoutOtpModal, {
-            centered: true,
-            backdrop: false,
-            keyboard: false,
-            windowClass: 'otp-verify-modal'
-          });
+          this.showOtpOverlay = true;
         },
         error: (err) => {
           this.loading = false;
@@ -1185,7 +1194,7 @@ export class CheckoutComponent {
       otp: this.otpForm.value.otp
     })).subscribe({
       next: () => {
-        this.checkoutOtpModalRef?.close();
+        this.showOtpOverlay = false;
         this.showLogin = true;
         this.loginForm.controls['email'].setValue(this.checkoutRegistrationEmail);
         this.notificationService.showSuccess('Account verified successfully! Please log in with your password.');

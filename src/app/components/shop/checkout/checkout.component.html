@@ -212,6 +212,10 @@
                       *ngIf="form?.controls?.['phone']?.touched && form.controls['phone']?.errors?.['required']">
                       {{ 'Phone is Required' | translate }}
                     </div>
+                    <div class="error-message"
+                      *ngIf="form?.controls?.['phone']?.touched && form.controls['phone']?.errors?.['invalid']">
+                      {{ 'Phone Number must be 10 digits.' | translate }}
+                    </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group-modern">
@@ -410,11 +414,11 @@
   </div>
 </ng-template>
 
-<!-- Checkout OTP Verification Modal -->
-<ng-template #checkoutOtpModal let-modal>
-  <div class="otp-modal">
+<!-- Checkout OTP Verification Overlay -->
+<div class="otp-overlay" *ngIf="showOtpOverlay">
+  <div class="otp-modal" style="position: relative;">
 
-    <button class="qv-close" type="button" (click)="modal.dismiss('Cross click')" aria-label="Close" style="position: absolute; top: 12px; right: 15px; background: none; border: none; font-size: 24px; color: #888; cursor: pointer; transition: color 0.18s ease;">
+    <button class="otp-modal__close" type="button" (click)="showOtpOverlay = false" aria-label="Close" style="position: absolute; top: 12px; right: 15px; background: none; border: none; font-size: 24px; color: #888; cursor: pointer; transition: color 0.18s ease;">
       <i class="ri-close-line"></i>
     </button>
 
@@ -458,4 +462,4 @@
     </form>
 
   </div>
-</ng-template>
+</div>
