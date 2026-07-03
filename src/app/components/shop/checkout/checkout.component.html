@@ -119,14 +119,58 @@
         <ng-container *ngIf="(setting$ | async)?.activation?.guest_checkout && !(accessToken$ | async)">
           <div class="nyk-section-header">
             <span class="nyk-section-eyebrow">Step 1 of 3</span>
-            <h2 class="nyk-choose-title">Account Details</h2>
-            <p class="nyk-choose-sub">Create an account or enter your details to continue</p>
+            <h2 class="nyk-choose-title">{{ (showLogin ? 'Login to Checkout' : 'Account Details') | translate }}</h2>
+            <p class="nyk-choose-sub">{{ (showLogin ? 'Please log in to proceed' : 'Create an account or enter your details to continue') | translate }}</p>
             <div class="nyk-section-rule"></div>
+          </div>
+
+          <!-- Alert message when showLogin is true -->
+          <div class="alert alert-info m-3 d-flex align-items-center gap-2" *ngIf="showLogin" style="background-color: rgba(229, 122, 47, 0.1); border: 1px solid rgba(229, 122, 47, 0.2); color: #E57A2F; border-radius: 5px; padding: 12px 16px;">
+            <i class="ri-information-line fs-5"></i>
+            <span class="fw-semibold">{{ 'You have to login to checkout' | translate }}</span>
           </div>
 
           <div class="nyk-guest-card">
 
-            <div class="nyk-guest-step">
+            <!-- Login Form -->
+            <div class="nyk-guest-step" *ngIf="showLogin">
+              <div class="nyk-guest-step-icon"><i class="ri-lock-line"></i></div>
+              <div class="nyk-guest-step-body">
+                <h5>{{ 'Login to Checkout' | translate }}</h5>
+                <form [formGroup]="loginForm" class="checkout-form row g-3">
+                  <div class="col-md-6">
+                    <div class="form-group-modern">
+                      <label for="login_email" class="form-label-modern">{{ 'Email' | translate }}</label>
+                      <input type="email" class="form-control-modern" placeholder="{{ 'Enter Email Address' | translate }}" formControlName="email" id="login_email">
+                      <div class="error-message" *ngIf="loginForm?.controls?.['email']?.touched && loginForm.controls['email']?.errors?.['required']">
+                        {{ 'Email is Required' | translate }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group-modern">
+                      <label for="login_pass" class="form-label-modern">{{ 'Password' | translate }}</label>
+                      <input type="password" class="form-control-modern" placeholder="{{ 'Enter Password' | translate }}" formControlName="password" id="login_pass">
+                      <div class="error-message" *ngIf="loginForm?.controls?.['password']?.touched && loginForm.controls['password']?.errors?.['required']">
+                        {{ 'Password is Required' | translate }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 d-flex flex-column align-items-end reg-btn">
+                    <app-button [class]="'btn btn-register mb-2'" [id]="'login_btn'" (click)="checkoutLogin()" [loading]="loading" [disabled]="loading || loginForm.invalid">
+                      {{ 'Login' | translate }}
+                    </app-button>
+                    <div class="already-account-link">
+                      <span>{{ "Don't have an account?" | translate }} </span>
+                      <a href="javascript:void(0)" (click)="showLogin = false" class="text-theme fw-bold">{{ 'Register' | translate }}</a>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Register Form -->
+            <div class="nyk-guest-step" *ngIf="!showLogin">
               <div class="nyk-guest-step-icon"><i class="ri-user-line"></i></div>
               <div class="nyk-guest-step-body">
                 <h5>{{ 'Account Details' | translate }}</h5>
@@ -184,57 +228,18 @@
                     <app-button [class]="'btn btn-register mb-2'" [id]="'register_btn'"
                       (click)="registerAccount()" [loading]="loading"
                       [disabled]="loading || form.controls['name'].invalid || form.controls['email'].invalid || form.controls['phone'].invalid || form.controls['password'].invalid">
-                      {{ 'Register' | translate }}
+                      {{ 'Register & Continue' | translate }}
                     </app-button>
                     <div class="already-account-link">
                       <span>{{ 'Already have an account?' | translate }} </span>
-                      <a [routerLink]="['/auth/login']" class="text-theme fw-bold">{{ 'Login' | translate }}</a>
+                      <a href="javascript:void(0)" (click)="showLogin = true" class="text-theme fw-bold">{{ 'Login' | translate }}</a>
                     </div>
                   </div>
                 </form>
               </div>
             </div>
 
-            <div *ngIf="!(cartDigital$ | async)" class="nyk-guest-step">
-              <div class="nyk-guest-step-icon"><i class="ri-map-pin-line"></i></div>
-              <div class="nyk-guest-step-body">
-                <div class="nyk-section-subheading">
-                  <h5>{{ 'Shipping Address' | translate }}</h5>
-                  <a href="javascript:void(0)" class="nyk-link-add"
-                     (click)="AddressModal.openModal(undefined, 'nyk-address-right-panel')">
-                    <i class="ri-add-line"></i> {{ 'Add Address' | translate }}
-                  </a>
-                </div>
-                <app-address-block [addresses]="(user$ | async)?.address || []" [type]="'shipping'"
-                  (selectAddress)="selectShippingAddress($event)">
-                </app-address-block>
-              </div>
-            </div>
-
-            <div class="nyk-guest-step">
-              <div class="nyk-guest-step-icon"><i class="ri-map-pin-line"></i></div>
-              <div class="nyk-guest-step-body">
-                <div class="nyk-section-subheading">
-                  <h5>{{ 'Billing_address' | translate }}</h5>
-                  <a href="javascript:void(0)" class="nyk-link-add"
-                     (click)="AddressModal.openModal(undefined, 'nyk-address-right-panel')">
-                    <i class="ri-add-line"></i> {{ 'Add Address' | translate }}
-                  </a>
-                </div>
-                <app-address-block [addresses]="(user$ | async)?.address || []" [type]="'billing'"
-                  (selectAddress)="selectBillingAddress($event)">
-                </app-address-block>
-              </div>
-            </div>
-
-            <div *ngIf="!(cartDigital$ | async)" class="nyk-guest-step">
-              <div class="nyk-guest-step-icon"><i class="ri-truck-line"></i></div>
-              <div class="nyk-guest-step-body">
-                <h5>{{ 'Delivery Options' | translate }}</h5>
-                <app-delivery-block [setting]="(setting$ | async)!" (selectDelivery)="selectDelivery($event)">
-                </app-delivery-block>
-              </div>
-            </div>
+            <!-- Note: Shipping & Billing Addresses are removed from Guest Checkout per customization guide -->
 
           </div>
         </ng-container>
@@ -402,5 +407,79 @@
         </div>
       </div>
     </div>
+  </div>
+</ng-template>
+
+<!-- Checkout OTP Verification Modal -->
+<ng-template #checkoutOtpModal let-modal>
+  <div class="otp-modal-wrapper">
+
+    <div class="otp-modal-head">
+      <div class="otp-modal-icon">
+        <i class="ri-mail-check-line"></i>
+      </div>
+      <h4 class="otp-modal-title">{{ 'Verify Your Email' | translate }}</h4>
+      <p class="otp-modal-subtitle">
+        {{ 'Enter the 6-digit code sent to' | translate }}
+        <strong>{{ checkoutRegistrationEmail }}</strong>
+      </p>
+    </div>
+
+    <form [formGroup]="otpForm" (ngSubmit)="verifyCheckoutOtp()" class="otp-modal-form">
+
+      <div class="otp-input-row" [class.invalid]="otpForm.controls['otp'].touched && otpForm.controls['otp'].invalid">
+        <input
+          type="text"
+          formControlName="otp"
+          maxlength="6"
+          placeholder="0  0  0  0  0  0"
+          oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+          onkeypress="if(this.value.length==6) return false;"
+          autocomplete="one-time-code">
+      </div>
+      <span *ngIf="otpForm.controls['otp'].touched && otpForm.controls['otp'].errors?.['required']" class="otp-error">
+        {{ 'Please enter the verification code' | translate }}
+      </span>
+      <span *ngIf="otpForm.controls['otp'].touched && otpForm.controls['otp'].errors?.['minlength']" class="otp-error">
+        {{ 'Code must be 6 digits' | translate }}
+      </span>
+
+      <button type="submit" class="otp-verify-btn" [disabled]="otpForm.invalid">
+        {{ 'Verify & Continue' | translate }}
+      </button>
+
+      <p class="otp-resend-text">
+        {{ "Didn't receive the code?" | translate }}
+        <a href="javascript:void(0)" class="otp-resend-link">{{ 'Resend' | translate }}</a>
+      </p>
+
+      <div class="otp-open-mail">
+        <span class="otp-open-mail-label">{{ 'Open your inbox' | translate }}</span>
+        <div class="mail-client-row">
+          <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" class="mail-client-btn gmail-btn">
+            <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#4caf50" d="M45 16.2l-5 2.75-5 4.75L35 40h7c1.657 0 3-1.343 3-3V16.2z"/>
+              <path fill="#1e88e5" d="M3 16.2l3.614 1.71L13 23.7V40H6c-1.657 0-3-1.343-3-3V16.2z"/>
+              <polygon fill="#e53935" points="35,11.2 24,19.45 13,11.2 12,17 13,23.7 24,31.95 35,23.7 36,17"/>
+              <path fill="#c62828" d="M3 12.298V16.2l10 7.5V11.2L9.876 8.859C9.132 8.301 8.228 8 7.298 8 4.924 8 3 9.924 3 12.298z"/>
+              <path fill="#fbc02d" d="M45 12.298V16.2l-10 7.5V11.2l3.124-2.341C38.868 8.301 39.772 8 40.702 8 43.076 8 45 9.924 45 12.298z"/>
+            </svg>
+            Gmail
+          </a>
+          <a href="https://outlook.live.com/mail" target="_blank" rel="noopener noreferrer" class="mail-client-btn outlook-btn">
+            <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#1976D2" d="M28 12h14c1.105 0 2 .895 2 2v20c0 1.105-.895 2-2 2H28V12z"/>
+              <path fill="#fff" d="M44 12L28 24l16 12V12z"/>
+              <path fill="#0D47A1" d="M28 36V12L4 18v12l24 6z"/>
+              <ellipse fill="#fff" cx="16" cy="24" rx="6" ry="8"/>
+              <ellipse fill="#1976D2" cx="16" cy="24" rx="4" ry="6"/>
+            </svg>
+            Outlook
+          </a>
+        </div>
+      </div>
+
+    </form>
+
   </div>
 </ng-template>

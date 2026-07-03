@@ -138,9 +138,8 @@ $white:  #ffffff;
     margin-bottom: 6px;
 
     div {
-      display: inline;
-
-      &::after { content: ' '; }
+      display: block;
+      margin-bottom: 2px;
     }
   }
 }
