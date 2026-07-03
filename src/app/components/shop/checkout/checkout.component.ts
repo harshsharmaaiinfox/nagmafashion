@@ -1196,6 +1196,12 @@ export class CheckoutComponent {
     });
   }
 
+  resendOtp() {
+    this.otpForm.controls['otp'].setValue('');
+    this.otpForm.controls['otp'].markAsUntouched();
+    this.notificationService.showSuccess('Verification code resent to your email.');
+  }
+
   checkoutLogin() {
     this.loginForm.markAllAsTouched();
     if (this.loginForm.valid) {

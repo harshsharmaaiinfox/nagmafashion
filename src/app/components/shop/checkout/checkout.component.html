@@ -161,7 +161,7 @@
                       {{ 'Login' | translate }}
                     </app-button>
                     <div class="already-account-link">
-                      <span>{{ "Don't have an account?" | translate }} </span>
+                      <span>{{ "Don't have an account?" | translate }}&nbsp;</span>
                       <a href="javascript:void(0)" (click)="showLogin = false" class="text-theme fw-bold">{{ 'Register' | translate }}</a>
                     </div>
                   </div>
@@ -231,7 +231,7 @@
                       {{ 'Register & Continue' | translate }}
                     </app-button>
                     <div class="already-account-link">
-                      <span>{{ 'Already have an account?' | translate }} </span>
+                      <span>{{ 'Already have an account?' | translate }}&nbsp;</span>
                       <a href="javascript:void(0)" (click)="showLogin = true" class="text-theme fw-bold">{{ 'Login' | translate }}</a>
                     </div>
                   </div>
@@ -412,73 +412,49 @@
 
 <!-- Checkout OTP Verification Modal -->
 <ng-template #checkoutOtpModal let-modal>
-  <div class="otp-modal-wrapper">
+  <div class="otp-modal">
 
-    <div class="otp-modal-head">
-      <div class="otp-modal-icon">
-        <i class="ri-mail-check-line"></i>
-      </div>
-      <h4 class="otp-modal-title">{{ 'Verify Your Email' | translate }}</h4>
-      <p class="otp-modal-subtitle">
-        {{ 'Enter the 6-digit code sent to' | translate }}
-        <strong>{{ checkoutRegistrationEmail }}</strong>
-      </p>
+    <button class="qv-close" type="button" (click)="modal.dismiss('Cross click')" aria-label="Close" style="position: absolute; top: 12px; right: 15px; background: none; border: none; font-size: 24px; color: #888; cursor: pointer; transition: color 0.18s ease;">
+      <i class="ri-close-line"></i>
+    </button>
+
+    <div class="otp-modal__icon">
+      <i class="ri-mail-check-line"></i>
     </div>
 
-    <form [formGroup]="otpForm" (ngSubmit)="verifyCheckoutOtp()" class="otp-modal-form">
+    <h2 class="otp-modal__title">{{ 'Verify Your Email' | translate }}</h2>
+    <p class="otp-modal__desc">
+      {{ 'Enter the 6-digit code sent to' | translate }} <strong>{{ checkoutRegistrationEmail }}</strong>
+    </p>
 
-      <div class="otp-input-row" [class.invalid]="otpForm.controls['otp'].touched && otpForm.controls['otp'].invalid">
+    <form [formGroup]="otpForm" (ngSubmit)="verifyCheckoutOtp()" style="width: 100%; display: flex; flex-direction: column; gap: 15px; align-items: center;">
+      <div class="otp-field">
         <input
           type="text"
           formControlName="otp"
           maxlength="6"
-          placeholder="0  0  0  0  0  0"
+          placeholder="Enter 6-digit code"
           oninput="this.value = this.value.replace(/[^0-9]/g, '');"
           onkeypress="if(this.value.length==6) return false;"
-          autocomplete="one-time-code">
+          autocomplete="one-time-code"
+          class="otp-field__input"
+          [class.otp-field__input--error]="otpForm.controls['otp'].touched && otpForm.controls['otp'].invalid">
       </div>
-      <span *ngIf="otpForm.controls['otp'].touched && otpForm.controls['otp'].errors?.['required']" class="otp-error">
+      <span *ngIf="otpForm.controls['otp'].touched && otpForm.controls['otp'].errors?.['required']" style="font-family: 'Inter', sans-serif; font-size: 12px; color: #e74c3c; align-self: flex-start;">
         {{ 'Please enter the verification code' | translate }}
       </span>
-      <span *ngIf="otpForm.controls['otp'].touched && otpForm.controls['otp'].errors?.['minlength']" class="otp-error">
+      <span *ngIf="otpForm.controls['otp'].touched && otpForm.controls['otp'].errors?.['minlength']" style="font-family: 'Inter', sans-serif; font-size: 12px; color: #e74c3c; align-self: flex-start;">
         {{ 'Code must be 6 digits' | translate }}
       </span>
 
-      <button type="submit" class="otp-verify-btn" [disabled]="otpForm.invalid">
+      <button type="submit" class="otp-modal__btn" [disabled]="otpForm.invalid">
         {{ 'Verify & Continue' | translate }}
       </button>
 
-      <p class="otp-resend-text">
-        {{ "Didn't receive the code?" | translate }}
-        <a href="javascript:void(0)" class="otp-resend-link">{{ 'Resend' | translate }}</a>
+      <p class="otp-modal__resend">
+        {{ "Didn't receive the code?" | translate }}&nbsp;
+        <button type="button" class="otp-modal__resend-btn" (click)="resendOtp()">{{ 'Resend' | translate }}</button>
       </p>
-
-      <div class="otp-open-mail">
-        <span class="otp-open-mail-label">{{ 'Open your inbox' | translate }}</span>
-        <div class="mail-client-row">
-          <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" class="mail-client-btn gmail-btn">
-            <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-              <path fill="#4caf50" d="M45 16.2l-5 2.75-5 4.75L35 40h7c1.657 0 3-1.343 3-3V16.2z"/>
-              <path fill="#1e88e5" d="M3 16.2l3.614 1.71L13 23.7V40H6c-1.657 0-3-1.343-3-3V16.2z"/>
-              <polygon fill="#e53935" points="35,11.2 24,19.45 13,11.2 12,17 13,23.7 24,31.95 35,23.7 36,17"/>
-              <path fill="#c62828" d="M3 12.298V16.2l10 7.5V11.2L9.876 8.859C9.132 8.301 8.228 8 7.298 8 4.924 8 3 9.924 3 12.298z"/>
-              <path fill="#fbc02d" d="M45 12.298V16.2l-10 7.5V11.2l3.124-2.341C38.868 8.301 39.772 8 40.702 8 43.076 8 45 9.924 45 12.298z"/>
-            </svg>
-            Gmail
-          </a>
-          <a href="https://outlook.live.com/mail" target="_blank" rel="noopener noreferrer" class="mail-client-btn outlook-btn">
-            <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-              <path fill="#1976D2" d="M28 12h14c1.105 0 2 .895 2 2v20c0 1.105-.895 2-2 2H28V12z"/>
-              <path fill="#fff" d="M44 12L28 24l16 12V12z"/>
-              <path fill="#0D47A1" d="M28 36V12L4 18v12l24 6z"/>
-              <ellipse fill="#fff" cx="16" cy="24" rx="6" ry="8"/>
-              <ellipse fill="#1976D2" cx="16" cy="24" rx="4" ry="6"/>
-            </svg>
-            Outlook
-          </a>
-        </div>
-      </div>
-
     </form>
 
   </div>
